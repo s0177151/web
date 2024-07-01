@@ -4,11 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="libs/bootstrap-4.0.0-dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #7be3f5; 
+        }
+        .pform {
+            background-color: #c5e1ee; 
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        header {
+            background-color: #7dd6ff; 
+            padding: 10px 0;
+            text-align: center;
+        }
+        footer {
+            background-color: #7dd6ff; 
+            padding: 10px 0;
+            text-align: center;
+        }
+    </style>
     <link rel="stylesheet" href="style8.css">
     <script src="libs/jquery-3.4.1.min.js"></script>
-    <title>Задание 4</title>
+    <title>Task</title>
 </head>
 <body>
+    <header>
+        <h1>Веб</h1>
+    </header>
 <div class="pform">
     <form action="" method="post">
         <h3>Форма</h3>
@@ -71,5 +95,8 @@
         <button type="submit">Отправить</button>
     </form>
   </div>
+  <footer>
+    <p>Рыдзелев</p>
+</footer>
 </body>
 </html>
