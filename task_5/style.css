@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@100..800&display=swap');
+
+body {
+    font-family: "Martian Mono", monospace;
+    font-optical-sizing: auto;
+}
+
+.background {
+    @apply bg-gray-900;
+}
