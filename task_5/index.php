@@ -204,14 +204,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 $stmt = $db->prepare("INSERT INTO users (login, password) VALUES (?, ?)");
                 $stmt->execute([$login, $mpassword]);
                 $user_id = $db->lastInsertId();
-                $_SESSION['user_id'] = $user_id; // Добавил эту строку
+                $_SESSION['user_id'] = $user_id; // Добавил эту строкуS
                 $dbFD = $db->prepare("INSERT INTO form_data (fio, phone, email, birthday, gender, biography, agreement, user_id) VALUES (?,?,?,?,?,?,?,?)");
                 $dbFD->execute([$fio, $phone, $email, strtotime($birthday), $gender, $biography, $agreement, $user_id]);
                 $form_id = $db->lastInsertId();
                 $_SESSION['form_id'] = $form_id;
                 if (!empty($like_lang)) {
                     foreach ($like_lang as $lang) {
-                        $dbL = $db->prepare("INSERT INTO form_data_lang (id_form, id_lang) VALUES (?, (SELECT id FROM languages WHERE name = ?))");
+                        $dbL = $db->prepare("INSERT INTO form_data_lang (id_form, id_lang, role) VALUES (?, (SELECT id FROM languages WHERE name = ?), 'user')");
                         $dbL->execute([$form_id, $lang]);
                     }
                 }
