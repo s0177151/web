@@ -71,7 +71,7 @@ if (!$haveAdmin) {
             echo '<tr class="border-b border-gray-200 hover:bg-gray-100" data-id=' . $row['id'] . '><form action="./removeForm.php?id='. $row['id'] . '">
             
                             <td class="py-3 px-4">' . $row['id'] . $row['user_id'] . '</td>
-                            <td class="py-3 px-4">' . $row['fullName'] . '</td>
+                            <td class="py-3 px-4">' . $row['fio'] . '</td>
                             <td class="py-3 px-4">' . $row['phone'] . '</td>
                             <td class="py-3 px-4">' . $row['email'] . '</td>
                             <td class="py-3 px-4">' . date("d.m.Y", $row['birthday']) . '</td>

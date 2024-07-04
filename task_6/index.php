@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if(($adminLog && !empty($getUid)) || !$adminLog){
         $cookAdmin = (!empty($_COOKIE['admin_value']) ? $_COOKIE['admin_value'] : '');
         if($cookAdmin == '1'){
-            deleteCookies('fullName', 1);
+            deleteCookies('fio', 1);
             deleteCookies('phone', 1);
             deleteCookies('email', 1);
             deleteCookies('birthday', 1);
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         }
     }
 
-    $fullName = (!empty($_COOKIE['fullName_error']) ? $_COOKIE['fullName_error'] : '');
+    $fio = (!empty($_COOKIE['fio_error']) ? $_COOKIE['fio_error'] : '');
     $phone = (!empty($_COOKIE['phone_error']) ? $_COOKIE['phone_error'] : '');
     $email = (!empty($_COOKIE['email_error']) ? $_COOKIE['email_error'] : '');
     $birthday = (!empty($_COOKIE['birthday_error']) ? $_COOKIE['birthday_error'] : '');
@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         }
     }
 
-    validateEmpty('fullName', $fullName);
+    validateEmpty('fio', $fio);
     validateEmpty('phone', $phone);
     validateEmpty('email', $email);
     validateEmpty('birthday', $birthday);
@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             foreach($dbL->fetchAll(PDO::FETCH_ASSOC) as $item){
                 $favoriteLanguagesSA[] = $item['name'];
             }
-            setVale('fullName', $fet['fullName']);
+            setVale('fio', $fet['fio']);
             setVale('phone', $fet['phone']);
             setVale('email', $fet['email']);
             setVale('birthday', date("Y-m-d", $fet['birthday']));
@@ -134,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     include('form.php');
 } else {
-    $fullName = (!empty($_POST['fullName']) ? $_POST['fullName'] : '');
+    $fio = (!empty($_POST['fio']) ? $_POST['fio'] : '');
     $phone = (!empty($_POST['phone']) ? $_POST['phone'] : '');
     $email = (!empty($_POST['email']) ? $_POST['email'] : '');
     $birthday = (!empty($_POST['birthday']) ? $_POST['birthday'] : '');
@@ -147,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         if($adminLog && empty($_SESSION['login'])){
             header('Location: admin.php');
         } else {
-            deleteCookies('fullName', 1);
+            deleteCookies('fio', 1);
             deleteCookies('phone', 1);
             deleteCookies('email', 1);
             deleteCookies('birthday', 1);
@@ -182,9 +182,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         return $res;
     }
 
-    if(!val_empty('fullName', 'Заполните поле', empty($fullName))){
-        if(!val_empty('fullName', 'Длина поля > 255 символов', strlen($fullName) > 255)){
-            val_empty('fullName', 'Поле не соответствует требованиям: <i>Фамилия Имя (Отчество)</i>, кириллицей', !preg_match('/^([а-яёА-ЯЁ]+-?[а-яёА-ЯЁ]+)( [а-яёА-ЯЁ]+-?[а-яёА-ЯЁ]+){1,2}$/Diu', $fullName));
+    if(!val_empty('fio', 'Заполните поле', empty($fio))){
+        if(!val_empty('fio', 'Длина поля > 255 символов', strlen($fio) > 255)){
+            val_empty('fio', 'Поле не соответствует требованиям: <i>Фамилия Имя (Отчество)</i>, кириллицей', !preg_match('/^([а-яёА-ЯЁ]+-?[а-яёА-ЯЁ]+)( [а-яёА-ЯЁ]+-?[а-яёА-ЯЁ]+){1,2}$/Diu', $fio));
         }
     }
     if(!val_empty('phone', 'Заполните поле', empty($phone))){
@@ -228,7 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         header('Location: index.php'.(($getUid != NULL) ? '?uid='.$uid : ''));
         exit();
     } else {
-        deleteCookies('fullName');
+        deleteCookies('fio');
         deleteCookies('phone');
         deleteCookies('email');
         deleteCookies('birthday');
@@ -239,8 +239,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
     if ($log) {
-        $stmt = $db->prepare("UPDATE form_data SET fullName = ?, phone = ?, email = ?, birthday = ?, gender = ?, biography = ? WHERE user_id = ?");
-        $stmt->execute([$fullName, $phone, $email, strtotime($birthday), $gender, $biography, $uid]);
+        $stmt = $db->prepare("UPDATE form_data SET fio = ?, phone = ?, email = ?, birthday = ?, gender = ?, biography = ? WHERE user_id = ?");
+        $stmt->execute([$fio, $phone, $email, strtotime($birthday), $gender, $biography, $uid]);
 
         $stmt = $db->prepare("DELETE FROM form_data_lang WHERE id_form = ?");
         $stmt->execute([$_SESSION['form_id']]);
@@ -263,8 +263,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $stmt->execute([$login, $mpassword]);
             $user_id = $db->lastInsertId();
 
-            $stmt = $db->prepare("INSERT INTO form_data (user_id, fullName, phone, email, birthday, gender, biography) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$user_id, $fullName, $phone, $email, strtotime($birthday), $gender, $biography]);
+            $stmt = $db->prepare("INSERT INTO form_data (user_id, fio, phone, email, birthday, gender, biography) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$user_id, $fio, $phone, $email, strtotime($birthday), $gender, $biography]);
             $fid = $db->lastInsertId();
 
             $stmt1 = $db->prepare("INSERT INTO form_data_lang (id_form, id_lang) VALUES (?, ?)");
@@ -276,7 +276,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             print('Error : ' . $e->getMessage());
             exit();
         }
-        setcookie('fullName_value', $fullName, time() + 24 * 60 * 60 * 365);
+        setcookie('fio_value', $fio, time() + 24 * 60 * 60 * 365);
         setcookie('phone_value', $phone, time() + 24 * 60 * 60 * 365);
         setcookie('email_value', $email, time() + 24 * 60 * 60 * 365);
         setcookie('birthday_value', $birthday, time() + 24 * 60 * 60 * 365);
