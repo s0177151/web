@@ -15,7 +15,7 @@
         <div class="message message_info"><?php if(isset($messages['info'])) echo $messages['info']; ?></div>
         <div class="flex flex-col gap-1">
             <p class="text-xs text-white/20">Фамилия, имя и отчество</p>
-            <input class="rounded-lg p-1 border-2 border-white/10 bg-gray-900 text-sm w-full <?php echo ($errors['fio'] != NULL) ? 'borred' : ''; ?>" value="<?php echo $values['fio']; ?>" type="text" name="fio" placeholder="Введите фамилию, имя и отчество...">
+            <input class="rounded-lg p-1 border-2 border-white/10 bg-gray-900 text-sm w-full <?php echo ($errors['fullName'] != NULL) ? 'borred' : ''; ?>" value="<?php echo $values['fullName']; ?>" type="text" name="fullName" placeholder="Введите фамилию, имя и отчество...">
             <div><?php echo $messages['fio']?></div>
         </div>
         <div class="flex flex-col gap-1">

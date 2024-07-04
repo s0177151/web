@@ -211,7 +211,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 $_SESSION['form_id'] = $form_id;
                 if (!empty($like_lang)) {
                     foreach ($like_lang as $lang) {
-                        $dbL = $db->prepare("INSERT INTO form_data_lang (id_form, id_lang) VALUES (?, IFNULL((SELECT id FROM languages WHERE name = ?), 0))");
+                        $dbL = $db->prepare("INSERT INTO form_data_lang (id_form, id_lang) VALUES (?, (SELECT id FROM languages WHERE name = ?))");
                         $dbL->execute([$form_id, $lang]);
                     }
                 }
