@@ -13,7 +13,7 @@ function conn(){
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    $fullName = (!empty($_COOKIE['fullName_error']) ? $_COOKIE['fullName_error'] : '');
+    $fio = (!empty($_COOKIE['fio_error']) ? $_COOKIE['fio_error'] : '');
     $phone = (!empty($_COOKIE['phone_error']) ? $_COOKIE['phone_error'] : '');
     $email = (!empty($_COOKIE['email_error']) ? $_COOKIE['email_error'] : '');
     $birthday = (!empty($_COOKIE['birthday_error']) ? $_COOKIE['birthday_error'] : '');
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $messages['success'] = '<div class="text-green-600 text-sm">Спасибо, данные сохранены.</div>';
     }
 
-    validateEmpty('fullName', $fullName);
+    validateEmpty('fio', $fio);
     validateEmpty('phone', $phone);
     validateEmpty('email', $email);
     validateEmpty('birthday', $birthday);
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     include('form.php');
 }
 else{
-    $fullName = (!empty($_POST['fullName']) ? $_POST['fullName'] : '');
+    $fio = (!empty($_POST['fio']) ? $_POST['fio'] : '');
     $phone = (!empty($_POST['phone']) ? $_POST['phone'] : '');
     $email = (!empty($_POST['email']) ? $_POST['email'] : '');
     $birthday = (!empty($_POST['birthday']) ? $_POST['birthday'] : '');
@@ -87,9 +87,9 @@ else{
         return $res;
     }
 
-    if(!val_empty('fullName', 'Заполните поле', empty($fullName))){
-        if(!val_empty('fullName', 'Длина поля > 255 символов', strlen($fullName) > 255)){
-            val_empty('fullName', 'Поле не соответствует требованиям: <i>Фамилия Имя (Отчество)</i>, кириллицей', !preg_match('/^([а-яёА-ЯЁ]+-?[а-яёА-ЯЁ]+)( [а-яёА-ЯЁ]+-?[а-яёА-ЯЁ]+){1,2}$/Diu', $fullName));
+    if(!val_empty('fio', 'Заполните поле', empty($fio))){
+        if(!val_empty('fio', 'Длина поля > 255 символов', strlen($fio) > 255)){
+            val_empty('fio', 'Поле не соответствует требованиям: <i>Фамилия Имя (Отчество)</i>, кириллицей', !preg_match('/^([а-яёА-ЯЁ]+-?[а-яёА-ЯЁ]+)( [а-яёА-ЯЁ]+-?[а-яёА-ЯЁ]+){1,2}$/Diu', $fio));
         }
     }
     if(!val_empty('phone', 'Заполните поле', empty($phone))){
@@ -136,7 +136,7 @@ else{
     }
     else {
         // Удаляем Cookies с признаками ошибок.
-        deleteCookies('fullName');
+        deleteCookies('fio');
         deleteCookies('phone');
         deleteCookies('email');
         deleteCookies('birthday');
@@ -147,8 +147,8 @@ else{
     }
 
     try {
-        $stmt = $db->prepare("INSERT INTO form_data (fullName, phone, email, birthday, gender, biography) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$fullName, $phone, $email, strtotime($birthday), $gender, $biography]);
+        $stmt = $db->prepare("INSERT INTO form_data (fio, phone, email, birthday, gender, biography) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$fio, $phone, $email, strtotime($birthday), $gender, $biography]);
         $fid = $db->lastInsertId();
         $stmt1 = $db->prepare("INSERT INTO form_data_lang (id_form, id_lang) VALUES (?, ?)");
         foreach($languages as $row){
@@ -159,7 +159,7 @@ else{
         print('Error : ' . $e->getMessage());
         exit();
     }
-    setcookie('fullName_value', $fullName, time() + 24 * 60 * 60 * 365);
+    setcookie('fio_value', $fio, time() + 24 * 60 * 60 * 365);
     setcookie('phone_value', $phone, time() + 24 * 60 * 60 * 365);
     setcookie('email_value', $email, time() + 24 * 60 * 60 * 365);
     setcookie('birthday_value', $birthday, time() + 24 * 60 * 60 * 365);

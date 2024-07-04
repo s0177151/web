@@ -16,14 +16,14 @@
             } ?></div>
         <div class="flex flex-col gap-1"><p class="text-xs text-white/20">Фамилия, имя и отчество</p>
             <input class="rounded-lg p-1 border-2 border-white/10 bg-gray-900 text-sm <?php echo $errors[
-            "fullName"
+            "fio"
             ] != null
                 ? "border border-red-600 rounded-lg"
                 : ""; ?>"
                    value="<?php echo $values[
-                   "fullName"
-                   ]; ?>" type="text" name="fullName" placeholder="Введите фамилию, имя и отчество...">
-            <div><?php echo $messages["fullName"]; ?></div>
+                   "fio"
+                   ]; ?>" type="text" name="fio" placeholder="Введите фамилию, имя и отчество...">
+            <div><?php echo $messages["fio"]; ?></div>
         </div>
         <div class="flex flex-col gap-1"><p class="text-xs text-white/20">Номер мобильного телефона</p>
             <input class="rounded-lg p-1 border-2 border-white/10 bg-gray-900 text-sm <?php echo $errors[
