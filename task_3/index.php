@@ -11,6 +11,7 @@
   
   if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (!empty($_GET['save'])) {
+      // Если есть параметр save, то выводим сообщение пользователю.
       print('<div class="message">Спасибо, данные сохранены.</div>');
     }
     include('form.php');
@@ -131,4 +132,25 @@
     print('Error : ' . $e->getMessage());
     exit();
   }
+
+  //  stmt - это "дескриптор состояния".
+  
+  //  Именованные метки.
+  //$stmt = $db->prepare("INSERT INTO test (label,color) VALUES (:label,:color)");
+  //$stmt -> execute(['label'=>'perfect', 'color'=>'green']);
+  
+  //Еще вариант
+  /*$stmt = $db->prepare("INSERT INTO users (firstname, lastname, email) VALUES (:firstname, :lastname, :email)");
+  $stmt->bindParam(':firstname', $firstname);
+  $stmt->bindParam(':lastname', $lastname);
+  $stmt->bindParam(':email', $email);
+  $firstname = "John";
+  $lastname = "Smith";
+  $email = "john@test.com";
+  $stmt->execute();
+  */
+
+  // Делаем перенаправление.
+  // Если запись не сохраняется, но ошибок не видно, то можно закомментировать эту строку чтобы увидеть ошибку.
+  // Если ошибок при этом не видно, то необходимо настроить параметр display_errors для PHP.
   header('Location: ?save=1');
