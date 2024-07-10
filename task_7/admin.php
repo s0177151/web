@@ -70,7 +70,7 @@ if (!$haveAdmin) {
         while ($row = $dbFD->fetch(PDO::FETCH_ASSOC)) {
             echo '<tr class="border-b border-gray-200 hover:bg-gray-100" data-id=' . checkInput($row['id']) . '>
                             <td class="py-3 px-4">' . checkInput($row['id']) . '</td>
-                            <td class="py-3 px-4">' . checkInput($row['fio']) . '</td>
+                            <td class="py-3 px-4">' . checkInput($row['fullName']) . '</td>
                             <td class="py-3 px-4">' . checkInput($row['phone']) . '</td>
                             <td class="py-3 px-4">' . checkInput($row['email']) . '</td>
                             <td class="py-3 px-4">' . date("d.m.Y", checkInput($row['birthday'])) . '</td>

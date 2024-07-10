@@ -68,8 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
         <div class="flex flex-col gap-1">
             <p class="text-xs text-white/20">Фамилия, имя и отчество</p>
-            <input class="rounded-lg p-1 border-2 border-white/10 bg-gray-900 text-sm w-full <?php echo ($errors['fio'] != NULL) ? 'border-red-500' : ''; ?>" value="<?php echo $values['fio']; ?>" type="text" name="fio" placeholder="Введите фамилию, имя и отчество...">
-            <div class="text-red-500"><?php echo $messages['fio']?></div>
+            <input class="rounded-lg p-1 border-2 border-white/10 bg-gray-900 text-sm w-full <?php echo ($errors['fullName'] != NULL) ? 'border-red-500' : ''; ?>" value="<?php echo $values['fullName']; ?>" type="text" name="fullName" placeholder="Введите фамилию, имя и отчество...">
+            <div class="text-red-500"><?php echo $messages['fullName']?></div>
         </div>
 
         <div class="flex flex-col gap-1">
