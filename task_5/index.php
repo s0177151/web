@@ -211,8 +211,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 $_SESSION['form_id'] = $form_id;
                 if (!empty($like_lang)) {
                     foreach ($like_lang as $lang) {
-                        $dbL = $db->prepare("INSERT INTO form_data_lang (id_form, id_lang) VALUES (?, (SELECT id FROM languages WHERE name = ?))");
-                        $dbL->execute([$form_id, $lang]);
+                        $stmt = $db->prepare("INSERT INTO users (login, password, role) VALUES (?, ?, ?)");
+                        $stmt->execute([$login, $mpassword, 'user']); // Добавьте 'user' для столбца 'роль'
                     }
                 }
                 setcookie('save', '1', time() + 60); //сохраняем на минуту
