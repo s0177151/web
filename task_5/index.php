@@ -34,7 +34,7 @@ function setValue($enName, $param)
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    $fio = (!empty($_COOKIE['fio_error']) ? $_COOKIE['fio_error'] : '');
+    $fullName = (!empty($_COOKIE['fullName_error']) ? $_COOKIE['fullName_error'] : '');
     $phone = (!empty($_COOKIE['phone_error']) ? $_COOKIE['phone_error'] : '');
     $email = (!empty($_COOKIE['email_error']) ? $_COOKIE['email_error'] : '');
     $birthday = (!empty($_COOKIE['birthday_error']) ? $_COOKIE['birthday_error'] : '');
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         }
     }
 
-    validateEmpty('fio', $fio);
+    validateEmpty('fullName', $fullName);
     validateEmpty('phone', $phone);
     validateEmpty('email', $email);
     validateEmpty('birthday', $birthday);
@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 foreach ($dbL->fetchAll(PDO::FETCH_ASSOC) as $item) {
                     $favoriteLanguagesSA[] = $item['name'];
                 }
-                setValue('fio', $fet['fio']);
+                setValue('fullName', $fet['fullName']);
                 setValue('phone', $fet['phone']);
                 setValue('email', $fet['email']);
                 setValue('birthday', date("Y-m-d", $fet['birthday']));
@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     include('form.php');
 } else {
-    $fio = (!empty($_POST['fio']) ? $_POST['fio'] : '');
+    $fullName = (!empty($_POST['fullName']) ? $_POST['fullName'] : '');
     $phone = (!empty($_POST['phone']) ? $_POST['phone'] : '');
     $email = (!empty($_POST['email']) ? $_POST['email'] : '');
     $birthday = (!empty($_POST['birthday']) ? $_POST['birthday'] : '');
@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $agreement = isset($_POST['agreement']) ? 1 : 0;
 
     if(isset($_POST['logout_form'])){
-        deleteCookies('fio', 1);
+        deleteCookies('fullName', 1);
         deleteCookies('phone', 1);
         deleteCookies('email', 1);
         deleteCookies('birthday', 1);
@@ -152,9 +152,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         return $res;
     }
 
-    if(!val_empty('fio', 'Заполните поле', empty($fio))){
-        if(!val_empty('fio', 'Длина поля > 255 символов', strlen($fio) > 255)){
-            val_empty('fio', 'Поле не соответствует требованиям: <i>Фамилия Имя (Отчество)</i>, кириллицей', !preg_match('/^([а-яёА-ЯЁ]+-?[а-яёА-ЯЁ]+)( [а-яёА-ЯЁ]+-?[а-яёА-ЯЁ]+){1,2}$/Diu', $fio));
+    if(!val_empty('fullName', 'Заполните поле', empty($fullName))){
+        if(!val_empty('fullName', 'Длина поля > 255 символов', strlen($fullName) > 255)){
+            val_empty('fullName', 'Поле не соответствует требованиям: <i>Фамилия Имя (Отчество)</i>, кириллицей', !preg_match('/^([а-яёА-ЯЁ]+-?[а-яёА-ЯЁ]+)( [а-яёА-ЯЁ]+-?[а-яёА-ЯЁ]+){1,2}$/Diu', $fullName));
         }
     }
     if(!val_empty('phone', 'Заполните поле', empty($phone))){
@@ -182,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     if (!$error) {
         if (!empty($_POST['save'])) {
-            setcookie('fio', $fio, time() + 30 * 24 * 60 * 60); //сохраняем на месяц
+            setcookie('fullName', $fullName, time() + 30 * 24 * 60 * 60); //сохраняем на месяц
             setcookie('phone', $phone, time() + 30 * 24 * 60 * 60); //сохраняем на месяц
             setcookie('email', $email, time() + 30 * 24 * 60 * 60); //сохраняем на месяц
             setcookie('birthday', $birthday, time() + 30 * 24 * 60 * 60); //сохраняем на месяц
@@ -201,18 +201,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             setcookie('password', $password);
             $mpassword = md5($password);
             try {
-                $stmt = $db->prepare("INSERT INTO users (login, password) VALUES (?, ?)");
-                $stmt->execute([$login, $mpassword]);
+                $stmt = $db->prepare("INSERT INTO users (login, password, роль) VALUES (?, ?, ?)");
+                $stmt->execute([$login, $mpassword, 'user']); // Добавьте значение 'user' для роли
                 $user_id = $db->lastInsertId();
                 $_SESSION['user_id'] = $user_id; // Добавил эту строкуS
-                $dbFD = $db->prepare("INSERT INTO form_data (fio, phone, email, birthday, gender, biography, agreement, user_id) VALUES (?,?,?,?,?,?,?,?)");
-                $dbFD->execute([$fio, $phone, $email, strtotime($birthday), $gender, $biography, $agreement, $user_id]);
+                $dbFD = $db->prepare("INSERT INTO form_data (fullName, phone, email, birthday, gender, biography, agreement, user_id) VALUES (?,?,?,?,?,?,?,?)");
+                $dbFD->execute([$fullName, $phone, $email, strtotime($birthday), $gender, $biography, $agreement, $user_id]);
                 $form_id = $db->lastInsertId();
                 $_SESSION['form_id'] = $form_id;
                 if (!empty($like_lang)) {
                     foreach ($like_lang as $lang) {
-                        $stmt = $db->prepare("INSERT INTO users (login, password, role) VALUES (?, ?, ?)");
-                        $stmt->execute([$login, $mpassword, 'user']); // Добавьте 'user' для столбца 'роль'
+                        $dbL = $db->prepare("INSERT INTO form_data_lang (id_form, id_lang) VALUES (?, (SELECT id FROM languages WHERE name = ?))");
+                        $dbL->execute([$form_id, $lang]);
                     }
                 }
                 setcookie('save', '1', time() + 60); //сохраняем на минуту
